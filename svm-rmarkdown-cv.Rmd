@@ -2,19 +2,24 @@
 output: 
   pdf_document:
     latex_engine: pdflatex
-    template: ~/Dropbox/miscelanea/svm-r-markdown-templates/svm-latex-cv.tex
+    template: svm-latex-cv.tex
+  keep_md: true
 geometry: margin=1in
+classoption: a4paper
 
 title: "CV"
-author: William Sealy Gosset
+author: Richard James Telford
 
-jobtitle: "Chief Brewer, Arthur Guinness & Son"
-address: "Guinness Brewery · Park Royal · London NW10 7RR, UK"
-fontawesome: yes
-email: guinness@consumer-care.net
+jobtitle: "Førsteamanuensis"
+address: "University of Bergen, Department of Biology, Postboks 7803, N-5020 Bergen, Norway  "
+fontawesome: no
+email: richard.telford@uib.no
 # github: svmiller
-phone: "+353 1 408 4800"
-web: guinness.com
+phone: "+47 555 83422"
+web: www.uib.no/rg/EECRG
+twitter: "richardjtelford"
+blog: quantpalaeo.wordpress.com
+
 updated: no
 
 keywords: R Markdown, academic CV, template
@@ -24,65 +29,280 @@ fontfamilyoptions: sc, osf
 fontsize: 11pt
 linkcolor: blue
 urlcolor: blue
+params:
+  publication_list: !r NULL
+  long: !r TRUE
 ---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = TRUE, cache = FALSE)
+
+```
+
+```{r load}
+library("tidyverse")
+
+publication_list <- params$publication_list
+
+#overwrite writeLines
+
+writeLines_old <- writeLines
+
+writeLines2 <- function (text, con = stdout(), sep = "\n", useBytes = FALSE) 
+{
+  text <- fix_text(text)
+  
+    if (is.character(con)) {
+        con <- file(con, "w")
+        on.exit(close(con))
+    }
+    .Internal(writeLines(text, con, sep, useBytes))
+}
+
+
+unlockBinding("writeLines", as.environment("package:base"))
+assign("writeLines", writeLines2, "package:base")
+
+# unlockBinding("termplot", getNamespace("stats"))
+# assign("termplot", my.termplot, getNamespace("stats"))
+# 
+# assignInNamespace("writeLines", writeLines2, "base")
+
+
+
+library("RefManageR")
+bib <- ReadBib("works.bib")
+
+for(i in 1:length(bib)){
+  bib[[i]]$isbn <- NULL
+  bib[[i]]$pages <- gsub("(?<!-)-(?!-)", "--", gsub(" ", "", bib[[i]]$pages), perl = TRUE)
+  if(!is.null(bib[[i]]$doi)){
+    if(!grepl("^http", bib[[i]]$doi)){
+      bib[[i]]$doi <- paste0("http://dx.doi.org/", bib[[i]]$doi)
+
+    }
+    bib[[i]]$url <- NULL
+  }
+}
+
+```
 
 # Employment
 
-*Arthur Guinness & Son*
+*University of Bergen*  
+Associate Professor \hfill January 2007 -- Present.
 
-Chief Brewer (Park Royal) \hfill 1935-1937
+*Bjerknes Centre for Climate Research*  
+Forsker II \hfill January 2003 -- December 2006.   
 
-Researcher (Dublin) \hfill 1899-1935
+*Newcastle University*  
+Research Associate \hfill September 2001 -- December 2002.  
+Teaching Fellow \hfill September 2000 -- September 2001.  
+
+*Lancaster University*  
+Research Associate \hfill June 2000 -- August 2000.  
+Teaching Fellow \hfill October 1999 -- June 2000.  
+Research Associate \hfill October 1998 -- October 1999.   
 
 # Education
 
-*New College, Oxford University*, B.A. Chemistry \hfill 1899
+*Newcastle University*  
+Certificate in Learning and Teaching in Higher Education \hfill 2001
 
+*University of Wales, Aberystwyth*  
+PhD in Earth Sciences \hfill 1998  
+Title "Diatom stratigraphies of Lakes Awassa and Tilo, Ethiopia: Holocene records of groundwater variability and climate change."  
+Supervised by Dr H.F. Lamb.
+
+*Clare College, Cambridge University*  
+BA (Hons) 2.1 Natural sciences (Plant sciences) \hfill 1994  
+```{r conditional_uni, results = "asis"}
+if(long){
+cat("Secondary subjects: Geology and Ecology  \n")  
+cat("Awards: First year Scholarship \n\n")
+}  
+```
+
+```{r conditional_school, results = "asis"}
+if(long){
+cat("*Ackworth School, Pontefract, West Yorkshire*  \n")   
+cat("A Levels: Four grade A, one grade B \\hfill 1991  \n")  
+cat("GCSEs: Eleven at grades A-C including English, Maths, and French \\hfill 1989/1990  \n")  
+cat("Awards: Highest Scholarship, Athletic colours\n\n")  
+}  
+```
 
 # Publications
 
-## Books
+Number ISI citations: 2783  \hfill H-index: 29  
+Number of papers: `r sum(bib$bibtype == "Article")` \hfill Number of book chapters: `r sum(bib$bibtype == "InBook")`  
 
-Pearson, E.S. and John Wishart (eds.). 1943. *"Student's" Collected Papers* London: Biometrika Office.
+## `r ifelse(long, "", "Selected")` Journal Articles
+```{r papers, results = "asis"}
 
-## Journal Articles
+fix_text <- function(text){
+  text <- gsub("(?<!\\*)Telford, R. J,", "**Telford, R. J.**,", text, perl = TRUE)
+  text <- gsub("(?<!\\*)Telford, R\\. J\\. ", "**Telford, R. J.** ", text, perl = TRUE)
+  text <- gsub("(?<!\\*)R. Telford", "**R. Telford**", text, perl = TRUE)
+  text <- gsub("(?<!\\*)R. J. Telford", "**R. J. Telford**", text, perl = TRUE)
 
-Student. 1938. "Comparison between Balanced and Random Arrangements on Field Plots." *Biometrika* 29(3-4): 363--378.
+  text <- gsub("\\nIn:", "", text)
+  text <- gsub(" pp\\.", "", text)
+  text <- gsub("'", "", text)
+  text <- gsub("`", "", text)
+}
 
-Student. 1936. "Co-operation in Large Scale Experiments." *Supplement to Journal of the Royal Statistical Society* 3(2): 115--136.
+if(!is.null(publication_list)){
+  bib <- bib[names(bib) %in% publication_list]
+} 
 
-Student. 1931. "On the *z* Test." *Biometrika* 23(3-4): 407-408.
+papers <- bib[bib$bibtype == "Article"]
+for(i in 1:length(papers)){
+  papers[[i]]$number <- ""
+  papers[[i]]$eprint <- NULL
+  papers[[i]]$issn <- NULL
+}
 
-Student. 1931. "The Lanarkshire Milk Experiment." *Biometrika* 23(3-4): 398--406.
 
-Student. 1929. "Statistics in Biological Research." *Nature* 124: 93
 
-Student. 1927. "Errors of Routine Analysis." *Biometrika* 19(1-2): 151--164.
 
-Student. 1926. "Mathematics and Agronomy." *Journal of the American Society of Agronomy* 18.
+NoCite(papers)
+PrintBibliography(papers, .opts = list(style = "latex", bib.style = "authoryear", sorting = "ydnt", max.names = 20))
+```
 
-Student. 1925. "New Tables for Testing the Significance of Observations." *Metron* 5(3): 105--108.
 
-Student. 1923. "On Testing Varieties of Cereals." *Biometrika* 15(3-4): 271--293.
+```{r chapters, results = "asis"}
+fix_text <- function(text){
+  text <- gsub("(?<!\\*)Telford, R. J,", "**Telford, R. J.**,", text, perl = TRUE)
+  text <- gsub("(?<!\\*)Telford, R\\. J\\. ", "**Telford, R. J.** ", text, perl = TRUE)
+  text <- gsub("(?<!\\*)R. Telford", "**R. Telford**", text, perl = TRUE)
+  text <- gsub("(?<!\\*)R. J. Telford", "**R. J. Telford**", text, perl = TRUE)
 
-Student. 1921. "An Experimental Determination of the Probable Error of Dr. Spearman's Correlation Co-efficient" *Biometrika* 13(2-3): 263--282.
+  text <- gsub("'", "", text)
+  text <- gsub("`", "", text)
+}
 
-Student. 1917. "Tables for Estimating the Probability That the Given Mean of a Unique Sample of Observations Lies between $-\infty$ and Any Given Distance of the Mean of the Population from Which the Sample Is Drawn." *Biometrika* 11(4): 414--417.
 
-Student. 1909. "The Distribution of the Means of Samples Which Are Not Drawn at Random." *Biometrika* 7(1-2): 210--214.
+chapters <- bib[bib$bibtype == "InBook"]
 
-Student. 1908. "Probable Error of a Correlation Coefficient." *Biometrika* 6(2-3): 302--310.
+if(length(chapters) > 0){
+cat("## ", ifelse(long, "", "Selected"), "Book", ifelse(length(chapters) == 1, "Chapter", "Chapters"), "\n\n")
 
-Student. 1908. "The Probable Error of a Mean." *Biometrika* 6(1): 1--25.
 
-Student. 1907. "On the Error of Counting with a Haemacytometer." *Biometrika* 5(3): 351--360.
+NoCite(chapters)
+PrintBibliography(chapters, .opts = list(style = "latex", bib.style = "authoryear", sorting = "ydnt", max.names = 20))
+}
+```
 
-## Other Publications
+```{r conditional_presentations, results="asis"}
+if(long){
+presentations <- read_lines(
+"Telford RJ. 2012. Power analysis of tests of statistical significance of quantitative reconstructions. 12th International Paleolimnology Symposium, Glasgow, 21-24 August 2012.  
+Telford RJ, Kucera M. 2012. Consequences of the mismatch between the depth at which planktonic foraminifera live and the calibration depth of SST transfer functions. European Geosciences Union, Vienna, 22-27 April 2012.  
+Telford RJ, Birks HJB. 2011. Significance tests for transfer function-derived quantitative reconstructions. INQUA, Bern, July 21 – 27, 2011  
+Telford RJ. 2011. Significance tests for transfer function-derived quantitative reconstructions. INTIMATE workshop, Potsdam, February 7 – 9, 2011  
+Telford RJ. 2008. The tropics or the arctic? Where will ecosystem response to climate change be greatest? A test with palaeoecological data. 12th Nordic Meeting on Neotropical Botany, Turku, 7-9 August.  
+Telford RJ. 2007. Improving transfer functions for palaeoenvironmental reconstructions in spatially structured environments. NEPAL Conference, Palmse, 10-12 May.  
+Telford RJ, Jansen E, Risebrobakken B, Knudsen KL, Eiríksson J, Koç N, 2007. Synthesis of 1200 years of climate change in the Nordic Sea. European Geosciences Union, Vienna, 15-20 April 2007.
+Telford RJ. 2006 How many dates is enough? 2nd Carlsburg Dating Conference, Copenhagen, 15-17 November.   
+Brown L, Austin WEN, Telford RJ, Ninnemann US, Wilson LJ, Bryant CL. 2006. North Atlantic surface ocean radiocarbon reservoir age variation: links to rapid global climate change. 19th International 14C Conference, Oxford, 3-7 April.  
+Hald M, Andersson C, Ebbesen H, Jansen E, Klitgaard-Kristensen D, Risebrobakken B, Mikalsen G, Sartnhein M, Telford RJ. 2005. Comparing Planktonic Foraminiferal Climate Records during the Holocene on the Norwegian-Svalbard Continental Margin. European Geosciences Union, Vienna, 24-29 April.  
+Telford RJ, Birks HJB. 2005. The secret assumption of transfer functions. European Geosciences Union, Vienna, 24-29 April.  
+Telford RJ. 2004. Correlation of Norwegian terrestrial and oceanic temperature-sensitive proxies. ESF-HOLIVAR Workshop, Bremen, 3-5 February.  
+Telford RJ, Heegaard E, Birks HJB. 2003. All age-depth models are wrong: but which are useful? 9th International Paleolimnology Symposium, Espoo, 24-28 August.  
+Conley DJ, Andersen JH, Anderson NJ, Andrén E, Clarke AL, de Jonge V, Ellegaard M, Juggins S, Korhola A, Reuss N, Telford RJ, Vaalgamaa S, Weckstrom K. 2003. Monitoring long-term trends in eutrophication and nutrients in the coastal zone. 9th International Paleolimnology Symposium, Espoo, 24-28 August.  
+Metcalfe SE, Barker PA, Braisby J, Cook G, Davies SJ, Leng MJ, Newton AJ, Telford RJ, Terrett N. 2003. Long and short term change since the last glacial maximum in the Pátzcuaro basin, Michoacán, Mexico. XVI INQUA Congress, Reno, 25 July.  
+Telford RJ. 2003. The intercept is a poorly behaved estimate of a calibrated radiocarbon age. POLARCLIM-2 Land-Ocean workshop, Bergen, 8-9 May.  
+Telford RJ. 2003. The intercept is a poorly behaved estimate of a calibrated radiocarbon age. HOLIVAR workshop, Utrecht, 24-27 April.  
+Telford RJ, Lamb HF. 1998. Diatom-derived palaeoconductivity estimates for Lake Awassa Ethiopia: evidence for pulsed inflows of saline groundwater? Pages Open Science Meeting, London 20-23 April.  
+Telford RJ, Lamb HF. 1997. Diatom-derived palaeoconductivity estimates for Lakes Awassa and Tilo, Ethiopia: Holocene records of volcanic impact and climatic change. 7th International Paleolimnology Symposium, Heiligkreuztal, 28 August-2 September.")
 
-Student. 1905. "The Pearson Co-efficient of Correlation." Supplement to Report of 1904, Arthur Guinness Son & Company.
+presentations <- paste(1:length(presentations), presentations, sep = ". ")
 
-Student. 1904. "The Application of the 'Law of Error' to the Work of the Brewery." Report, Arthur Guinness Son & Company.
+cat("## Presentations (Selected)\n\n")
+cat(paste(presentations, collapse = " \n"))
+  } 
+```
 
-# References
+# Outreach
+Blog on palaeoecological methods at  [https://quantpalaeo.wordpress.com/](https://quantpalaeo.wordpress.com/) has had about 130,000 page views.  
+Regular contributor to [stackoverflow.com](https://stackoverflow.com/users/2055765/richard-telford) on R questions.   
+R package palaeoSig for determining significance of palaeoenvironmental reconstructions published on [CRAN](https://cran.r-project.org/web/packages/palaeoSig/index.html).
 
-Available upon request, though likely would include Karl Pearson and Ronald A. Fisher. Please send corrections, feedback, or details of missed publications (of which there are probably a few) to svmille@clemson.edu.
+# Supervision
+*PhD students* (\* main supervisor)  
+2008--2016		Perpetra Akite		MATRIX: Butterfly biodiversity in Ugandan tropical forest fragments  
+2008--2014		Collins Bulafu		MATRIX: Herb biodiversity in Ugandan tropical forest fragments  
+
+*Fulbright Students*  
+2008--2009	Brooke Wilkerson	Assessing policy impacts on forests using long term monitoring data  
+2005--2006	Michelle Crenshaw	Diatom palaeolimnology  
+
+*MSc students* (* main supervisor)  
+2013--2014  Moss Tesfayesus   Mangrove forest extent and status along the Eritrean coast  
+2011--2012	Sofie Söderström*	Interspecific whale associations in the Norwegian Seas  
+2009--2011	Gunnar Kvifte*		Psychodidae of Budongo Forest  
+2008--2010	Moreen Uwimbabazi	Bird diversity in forest fragments around Budongo Forest  
+2008--2010	Kristoffer Hauge*	MATRIX: Bat biodiversity in tropical forest fragments  
+2008--2010	Therese Kronstad*	MATRIX: Butterfly biodiversity in Ugandan tropical forest fragments  
+2007--2008	Wang Manfei		Population dynamics of trees colonizing coastal heathlands on Lurøy  
+
+# Teaching
+
+I hold a Certificate in Learning and Teaching in Higher Education from Newcastle University.
+
+*University of Bergen*  
+Course leader  
+	Bio302 – Biological data analysis II  
+	Bio303 – Ordination and Gradient Analysis  
+	Rklubben - weekly peer-learning drop-in session for R code problems
+Contributions to  
+	Bio201 – Ecology  
+	Bio250 – Palaeoecology  
+	Bio301 – Current themes in biodiversity evolution and ecology  
+	Bio351 – Quantitative Palaeoecology  
+
+*University of Newcastle*  
+Course leader  
+	Recent Environmental Change (3rd year course)  
+Contributions to  
+	Geomorphological Techniques  
+	
+*University of Lancaster*  
+Course leader  
+	Holocene Environmental Change (3rd year course)  
+	Physical Geography of the British Isles (2nd year course)  
+
+#Other Professional Duties
+*Reviewing*  
+```{r reviewing}
+journals <- c("Applied Geochemistry", "Aquatic Conservation", "Biology Letters", "Biotropica", "Climate Dynamics", "Climate of the Past", "Diversity and Distributions", "Ecological Indicators", "Ecology Letters", "Environmental Modelling & Software", "European Journal of Phycology", "Fundamental and Applied Limnology", "Geology", "Geophysical Research Letters", "The Holocene", "Hydrobiologia", "Inland Waters", "Journal of Applied Ecology", "Journal of Biogeography", "Journal of Paleolimnology", "Journal of Plankton Research", "Journal of Quaternary Science", "Journal of Statistical Software", "Limnology and Oceanography: Methods", "Nature", "Oikos", "Palaeogeography Palaeoclimatology Palaeoecology", "Quaternary Science Reviews", "Radiocarbon", "Vegetation History and Archaeobotany", "Scientific Reports", "Quaternary Research", "Nature Communications", "Marine Micropaleontology", "Frontiers in Ecology and Evolution")
+journals <- journals %>% sort() %>% unique() %>% paste(collapse = ", ")
+
+```
+
+I have reviewed manuscripts for: `r journals`
+
+# Professional Memberships
+2005-2006 European Geophysical Union.  
+1996-1998 International Society for Diatom Research
+
+# Scientific leadership
+2012-2015 PI palaeoDrivers  
+2008-2011 Co-PI THE MATRIX  
+2008-2011 Workpackage leader PES  
+2007-2008 Project leader “Endemic or Everywhere”  
+2007-2011 Workpackage leader ARTREC  
+2003-2006 Workpackage leader Nordic Council Project DEFINE  
+2006 Wrote Technical Implementation Plan for EU Framework 5 project PACLIVA  
+
+# Administration
+Deputy leader EECRG 2011-  
+Member of organising committee of Nile Basin Research Programme Biodiversity Working Group  
+Leader of appointment committee for MATRIX PhD positions in Bergen 2008  
+Member of appointment committee for MATRIX PhD positions in Makerere 2008  
+Grant reviewer for the Academy of Sciences of the Czech Republic; Swiss National Science Foundation; Royal Society of New Zealand, Polish National Science Centre, National Science Foundation.  
+
+```{r tidy}
+unlockBinding("writeLines", as.environment("package:base"))
+assign("writeLines", writeLines_old, "package:base")
+```
