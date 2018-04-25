@@ -196,10 +196,17 @@ PrintBibliography(chapters, .opts = list(style = "latex", bib.style = "authoryea
 ```{r conditional_presentations, results="asis"}
 if(long){
 presentations <- read_lines(
-"Telford RJ. 2012. Power analysis of tests of statistical significance of quantitative reconstructions. 12th International Paleolimnology Symposium, Glasgow, 21-24 August 2012.  
-Telford RJ, Kucera M. 2012. Consequences of the mismatch between the depth at which planktonic foraminifera live and the calibration depth of SST transfer functions. European Geosciences Union, Vienna, 22-27 April 2012.  
-Telford RJ, Birks HJB. 2011. Significance tests for transfer function-derived quantitative reconstructions. INQUA, Bern, July 21 – 27, 2011  
-Telford RJ. 2011. Significance tests for transfer function-derived quantitative reconstructions. INTIMATE workshop, Potsdam, February 7 – 9, 2011  
+"Rehfeld K, Trachsel M, Telford RJ, Laepple T 2016. How do proxy reconstruction artifacts contribute to the outcome of paleoclimate model benchmarking? EGU General Assembly, Vienna
+Telford, RJ. 2015. What do statistical tests of the significance of transfer-function derived reconstruction tell us?. International Palaeolimnology Symposium. Lanzhou.
+Telford RJ, Rehfeld K, St George S. 2015. Is there robust evidence of solar variability in palaeoclimate proxy data? EGU General Assembly, Vienna
+Telford, RJ. 2014. Pitfalls of using transfer functions to reconstruct sea-ice. PAGES Sea ice Proxy (SIP) working group Sea ice proxy synthesis and data-model comparison. Bremerhaven.
+Trachsel M, Telford RJ, Birks HJB 2014. Assessing the influence of two environmental variables on microfossil stratigraphies. EGU General Assembly Vienna
+Telford, RJ. 2013. Identifying lakes with potential good temperature reconstructions. 12th International Workshop on Subfossil Chironomids. New Forest.
+Telford RJ. 2012. Power analysis of tests of statistical significance of quantitative reconstructions. 12th International Paleolimnology Symposium, Glasgow, 21-24 August 2012.
+Telford RJ, Kucera M. 2012. Consequences of the mismatch between the depth at which planktonic foraminifera live and the calibration depth of SST transfer functions. European Geosciences Union, Vienna, 22-27 April 2012.
+Telford RJ, Birks HJB. 2011. Significance tests for transfer function-derived quantitative reconstructions. INQUA, Bern, July 21 – 27, 2011
+Telford, RJ. 2011. Avoiding numerical pitfalls in chironomid palaeoecology. 11th international subfossil chironomid workshop. Finse
+Telford RJ. 2011. Significance tests for transfer function-derived quantitative reconstructions. INTIMATE workshop, Potsdam, February 7 – 9, 2011
 Telford RJ. 2008. The tropics or the arctic? Where will ecosystem response to climate change be greatest? A test with palaeoecological data. 12th Nordic Meeting on Neotropical Botany, Turku, 7-9 August.  
 Telford RJ. 2007. Improving transfer functions for palaeoenvironmental reconstructions in spatially structured environments. NEPAL Conference, Palmse, 10-12 May.  
 Telford RJ, Jansen E, Risebrobakken B, Knudsen KL, Eiríksson J, Koç N, 2007. Synthesis of 1200 years of climate change in the Nordic Sea. European Geosciences Union, Vienna, 15-20 April 2007.
@@ -216,7 +223,7 @@ Telford RJ. 2003. The intercept is a poorly behaved estimate of a calibrated rad
 Telford RJ, Lamb HF. 1998. Diatom-derived palaeoconductivity estimates for Lake Awassa Ethiopia: evidence for pulsed inflows of saline groundwater? Pages Open Science Meeting, London 20-23 April.  
 Telford RJ, Lamb HF. 1997. Diatom-derived palaeoconductivity estimates for Lakes Awassa and Tilo, Ethiopia: Holocene records of volcanic impact and climatic change. 7th International Paleolimnology Symposium, Heiligkreuztal, 28 August-2 September.")
 
-presentations <- paste(1:length(presentations), presentations, sep = ". ")
+presentations <- paste(1:length(presentations), trimws(presentations), sep = ". ")
 
 cat("## Presentations (Selected)\n\n")
 cat(paste(presentations, collapse = " \n"))
@@ -224,12 +231,15 @@ cat(paste(presentations, collapse = " \n"))
 ```
 
 # Outreach
-Blog on palaeoecological methods at  [https://quantpalaeo.wordpress.com/](https://quantpalaeo.wordpress.com/) has had about 130,000 page views.  
+Blog on palaeoecological methods at  [https://quantpalaeo.wordpress.com/](https://quantpalaeo.wordpress.com/) has had about 140,000 page views.  
 Regular contributor to [stackoverflow.com](https://stackoverflow.com/users/2055765/richard-telford) on R questions.   
 R package palaeoSig for determining significance of palaeoenvironmental reconstructions published on [CRAN](https://cran.r-project.org/web/packages/palaeoSig/index.html).
 
 # Supervision
 *PhD students* (\* main supervisor)  
+2016--present    Siri Vatsø Haugum LandPress: Influence of fire and drought on coastal heathlands  
+2015--present Inge Althuizen  FunCab: Effect of plant functional groups on carbon flux  
+2015--present Shad Mahlum Temporal and spatial distribution of salmonid populations  
 2008--2016		Perpetra Akite		MATRIX: Butterfly biodiversity in Ugandan tropical forest fragments  
 2008--2014		Collins Bulafu		MATRIX: Herb biodiversity in Ugandan tropical forest fragments  
 
@@ -251,6 +261,7 @@ R package palaeoSig for determining significance of palaeoenvironmental reconstr
 I hold a Certificate in Learning and Teaching in Higher Education from Newcastle University.
 
 *University of Bergen*  
+Team member Plant functional traits course Chengdu China 2015  
 Course leader  
 	Bio302 – Biological data analysis II  
 	Bio303 – Ordination and Gradient Analysis  
@@ -275,7 +286,7 @@ Course leader
 #Other Professional Duties
 *Reviewing*  
 ```{r reviewing}
-journals <- c("Applied Geochemistry", "Aquatic Conservation", "Biology Letters", "Biotropica", "Climate Dynamics", "Climate of the Past", "Diversity and Distributions", "Ecological Indicators", "Ecology Letters", "Environmental Modelling & Software", "European Journal of Phycology", "Fundamental and Applied Limnology", "Geology", "Geophysical Research Letters", "The Holocene", "Hydrobiologia", "Inland Waters", "Journal of Applied Ecology", "Journal of Biogeography", "Journal of Paleolimnology", "Journal of Plankton Research", "Journal of Quaternary Science", "Journal of Statistical Software", "Limnology and Oceanography: Methods", "Nature", "Oikos", "Palaeogeography Palaeoclimatology Palaeoecology", "Quaternary Science Reviews", "Radiocarbon", "Vegetation History and Archaeobotany", "Scientific Reports", "Quaternary Research", "Nature Communications", "Marine Micropaleontology", "Frontiers in Ecology and Evolution")
+journals <- c("Applied Geochemistry", "Aquatic Conservation", "Biology Letters", "Biotropica", "Climate Dynamics", "Climate of the Past", "Diversity and Distributions", "Ecological Indicators", "Ecology Letters", "Environmental Modelling & Software", "European Journal of Phycology", "Fundamental and Applied Limnology", "Geology", "Geophysical Research Letters", "The Holocene", "Hydrobiologia", "Inland Waters", "Journal of Applied Ecology", "Journal of Biogeography", "Journal of Paleolimnology", "Journal of Plankton Research", "Journal of Quaternary Science", "Journal of Statistical Software", "Limnology and Oceanography: Methods", "Nature", "Oikos", "Palaeogeography Palaeoclimatology Palaeoecology", "Quaternary Science Reviews", "Radiocarbon", "Vegetation History and Archaeobotany", "Scientific Reports", "Quaternary Research", "Nature Communications", "Marine Micropaleontology", "Frontiers in Ecology and Evolution", "IPCC AR4")
 journals <- journals %>% sort() %>% unique() %>% paste(collapse = ", ")
 
 ```
@@ -296,11 +307,28 @@ I have reviewed manuscripts for: `r journals`
 2006 Wrote Technical Implementation Plan for EU Framework 5 project PACLIVA  
 
 # Administration
-Deputy leader EECRG 2011-  
-Member of organising committee of Nile Basin Research Programme Biodiversity Working Group  
-Leader of appointment committee for MATRIX PhD positions in Bergen 2008  
-Member of appointment committee for MATRIX PhD positions in Makerere 2008  
-Grant reviewer for the Academy of Sciences of the Czech Republic; Swiss National Science Foundation; Royal Society of New Zealand, Polish National Science Centre, National Science Foundation.  
+
+2018 Member of appointment committee for INCLINE postdoc
+2018 Chair of appointment committee for INCLINE PhD 
+2018 Chair of PhD evaluation committee at UiB
+2016 Memeber of appointment committee for LandPress PhD
+2015 Member of appointment committee for UiB PhD
+2015 Member of appointment committee for FunCab PhD
+2014 Chair of appointment committee for Seedclim PhD
+2013 Chair of appointment committee for NoAClim postdoc
+2013 Chair of appointment committee for UiB PhD
+2013-present Chair of election board at BIO
+2012 Chair of appointment committee for Parasol PhD
+2012 Chair of appointment committee for Parasol Postdoc
+2012 Chair of appointment committee for PalaeoDrivers Postdoc 
+2011 Chair of PhD evaluation committee at UiB
+2011 Chair of appointment committee for Matrix Postdoc
+2011-present Deputy leader EECRG  
+2009 Member of organising committee of Nile Basin Research Programme Biodiversity Working Group  
+2008 Chair of appointment committee for open UiB PhD
+2008 Chair of appointment committee for MATRIX PhD positions in Bergen  
+2008 Chair of appointment committee for MATRIX PhD positions in Makerere  
+Grant reviewer for the Academy of Sciences of the Czech Republic; Israel Ministry of Science and Technology; Swiss National Science Foundation; Royal Society of New Zealand, Polish National Science Centre, National Science Foundation.  
 
 ```{r tidy}
 unlockBinding("writeLines", as.environment("package:base"))

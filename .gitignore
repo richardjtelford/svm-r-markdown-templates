@@ -2,3 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
+
+
+#output files
+*.pdf
+
+#backup files
+*.bak
